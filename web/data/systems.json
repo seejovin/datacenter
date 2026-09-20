@@ -1,0 +1,772 @@
+{
+  "systems": [
+    {
+      "id": "power",
+      "title": "Power",
+      "color": "#f2b85a",
+      "description": "Follow energy from the source to the rack. Required foundations now; specialist power depth later, with electrical ownership kept explicit.",
+      "components": [
+        {
+          "id": "power-switchgear",
+          "title": "Utility & switchgear",
+          "role": "Receives incoming power and divides it into protected distribution paths.",
+          "input": "Utility supply, switch positions and the approved electrical configuration.",
+          "output": "Power on identified buses and branches, plus electrical status and measurements.",
+          "dependency": "Transformers, protective devices and every series element must support the required normal and failure-state load.",
+          "failure": "A lost source or shared upstream device can remove several apparently separate downstream feeds.",
+          "check": {
+            "question": "Do two rack feeds prove independent power?",
+            "answer": "No. Trace both feeds upstream. A shared bus, switchboard or source can defeat the claimed independence; evaluate the specific failure the service must survive."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L03",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L06",
+              "level": "applied"
+            },
+            {
+              "courseId": "CDCS",
+              "lessonId": "CDCS-L04",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "power-generator",
+          "title": "Generator & transfer switch",
+          "role": "Supplies longer-duration energy and transfers permitted loads to an acceptable source.",
+          "input": "Source-loss detection, start energy, fuel and transfer permissives.",
+          "output": "An accepted alternate supply after the start, stabilization and transfer sequence.",
+          "dependency": "The UPS must bridge the actual sequence; fuel, starting systems and load-step capability must remain available.",
+          "failure": "A generator may start yet fail to accept load, allowing stored energy to expire before service is supported.",
+          "check": {
+            "question": "Why is a successful engine start insufficient?",
+            "answer": "The service also needs acceptable voltage and frequency, permitted transfer and load acceptance. Timing and dependent systems determine whether the required service survives."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L06",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L09",
+              "level": "applied"
+            },
+            {
+              "courseId": "CDCS",
+              "lessonId": "CDCS-L05",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "power-ups",
+          "title": "UPS & battery",
+          "role": "Conditions power and provides bounded ride-through in supported operating modes.",
+          "input": "Normal or bypass AC supply and usable stored energy.",
+          "output": "A load supply whose protection depends on mode, rating and battery condition.",
+          "dependency": "Inverter capacity, bypass availability, battery runtime and recharge must match the load and transition requirements.",
+          "failure": "Bypass can leave equipment powered with reduced protection; exhausted or degraded batteries shorten ride-through.",
+          "check": {
+            "question": "Does a powered rack mean the UPS still provides battery protection?",
+            "answer": "No. Identify the path carrying the load. Maintenance bypass can remove the UPS and its stored-energy support from that path, even while the service remains powered."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L04",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L10",
+              "level": "applied"
+            },
+            {
+              "courseId": "CDCS",
+              "lessonId": "CDCS-L06",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "power-rack-pdu",
+          "title": "Rack PDU & server feeds",
+          "role": "Distributes branch power to named server inlets; some units also meter or switch outlets.",
+          "input": "Upstream A/B feeds and the actual equipment demand.",
+          "output": "Power through individual outlets, connectors and server power supplies.",
+          "dependency": "Outlet, phase, connector and surviving-feed limits must hold when one path is unavailable.",
+          "failure": "A local current limit can be exceeded despite acceptable rack-average kW; shared upstream supply defeats cord diversity.",
+          "check": {
+            "question": "Why assess the surviving feed instead of only the normal load?",
+            "answer": "A dual-supply server may shift most or all demand to one path. That remaining outlet, branch and supply must support the required load under the stated conditions."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L02",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L12",
+              "level": "applied"
+            },
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L05",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "title": "Cooling",
+      "color": "#63cdd3",
+      "description": "Trace heat from the rack to its final sink. Required foundations now; specialist cooling depth later, with mechanical ownership kept explicit.",
+      "components": [
+        {
+          "id": "cooling-air-handler",
+          "title": "Air handler & containment",
+          "role": "Moves air through equipment and a heat exchanger while limiting supply/exhaust mixing.",
+          "input": "Warm return air, an available cooling source and fan/control demand.",
+          "output": "Air delivered to equipment inlets within the required operating envelope.",
+          "dependency": "Fan performance, path resistance, sealing and upstream heat removal jointly determine useful cooling.",
+          "failure": "Recirculation or bypass can create hot inlets even when room-level capacity appears sufficient.",
+          "check": {
+            "question": "Can a cool room average rule out a hot rack?",
+            "answer": "No. Equipment depends on its inlet conditions. Exhaust recirculation or a restricted local path can overheat one rack while the average room reading stays acceptable."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L09",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L15",
+              "level": "applied"
+            },
+            {
+              "courseId": "CDCS",
+              "lessonId": "CDCS-L08",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "cooling-heat-rejection",
+          "title": "Heat rejection plant",
+          "role": "Transfers collected facility heat to the outdoor environment through the selected plant arrangement.",
+          "input": "Returning heat, electrical energy and any required water supply.",
+          "output": "A usable cooling source and rejected heat at the final sink.",
+          "dependency": "Ambient conditions, heat-exchanger approach and resource availability bound the usable capacity.",
+          "failure": "Upstream heat removal can fail while room units and CDU pumps remain running.",
+          "check": {
+            "question": "Does lower cooling energy always demonstrate improvement?",
+            "answer": "No. Compare similar workload and ambient conditions while preserving the required temperatures, capacity and resilience. A smaller workload or lost cooling function can also reduce energy use."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L08",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L17",
+              "level": "applied"
+            },
+            {
+              "courseId": "CDCS",
+              "lessonId": "CDCS-L12",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "cooling-cdu",
+          "title": "Coolant distribution unit",
+          "role": "Couples technology and facility cooling loops while maintaining their defined fluid and control interfaces.",
+          "input": "IT heat, a usable facility-water interface and validated local measurements.",
+          "output": "Heat transferred out of the technology loop plus flow, temperature and alarm evidence.",
+          "dependency": "The final heat sink, exchanger approach, supported fluid conditions and residual air cooling remain necessary.",
+          "failure": "Healthy communications and circulating pumps can coexist with insufficient heat transfer.",
+          "check": {
+            "question": "Why does CDU network reachability not prove cooling?",
+            "answer": "Reachability establishes a communication path. Useful cooling also requires valid flow and temperature evidence, a functioning exchanger and an available facility-side heat sink."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L11",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CDCP",
+              "lessonId": "CDCP-L16",
+              "level": "applied"
+            },
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L10",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "cooling-pump-valve",
+          "title": "Pump & control valve",
+          "role": "Regulates fluid movement as part of an approved cooling sequence.",
+          "input": "Start or position commands, permissives and measured process conditions.",
+          "output": "Actuator feedback and a measurable contribution to flow, pressure or temperature.",
+          "dependency": "Valid sensing, open flow paths, equipment eligibility and mechanical limits govern operation.",
+          "failure": "A run indication or reached valve position may provide no useful cooling when the path or source is unavailable.",
+          "check": {
+            "question": "Does a pump-running bit prove useful flow?",
+            "answer": "No. It reports one equipment state. Check valid flow or pressure evidence and the required sequence before concluding that the pump contributes to the cooling service."
+          },
+          "lessons": [
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L03",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L10",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L17",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "title": "Network",
+      "color": "#7d9cfa",
+      "description": "Priority now: D4 network engineering. Inspect packet paths, tenant boundaries, storage fabrics and management access.",
+      "components": [
+        {
+          "id": "network-leaf-spine",
+          "title": "Leaf–spine fabric",
+          "role": "Carries endpoint traffic through a routed underlay and, where used, a VXLAN overlay.",
+          "input": "Endpoint frames, routing state and VTEP reachability.",
+          "output": "Forwarded traffic on the selected physical path with the required encapsulation.",
+          "dependency": "Routes, adjacency resolution, hardware programming and supported MTU must agree on every relevant path.",
+          "failure": "A healthy routing session can hide a broken next hop or MTU defect that drops selected traffic.",
+          "check": {
+            "question": "Why can small pings work while an application fails?",
+            "answer": "The application may use larger packets or another ECMP path. Encapsulation adds overhead, so test required packet sizes and all relevant forwarding paths instead of relying on session state."
+          },
+          "lessons": [
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L001",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L007",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L01",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "network-tenant-gateway",
+          "title": "Tenant gateway & policy",
+          "role": "Routes traffic within the intended tenant context and applies the required communication boundaries.",
+          "input": "Tenant packets, endpoint identity, route membership and policy.",
+          "output": "Permitted routed flows while preserving the intended tenant separation.",
+          "dependency": "VRF, bridge-domain, VNI and route-import relationships must align with the approved design.",
+          "failure": "Wrong route import or classification can isolate an allowed service or expose another tenant.",
+          "check": {
+            "question": "Does a unique route distinguisher authorize tenant connectivity?",
+            "answer": "No. It makes otherwise identical routes distinct. Route-target membership and the surrounding routing and policy configuration determine where those routes are imported and usable."
+          },
+          "lessons": [
+            {
+              "courseId": "CISSP",
+              "lessonId": "CISSP-L18",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L030",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L02",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "network-san",
+          "title": "Storage fabric",
+          "role": "Connects authorized initiators to storage targets with controlled identity and transport behavior.",
+          "input": "Host I/O, initiator identities, fabric login and active access policy.",
+          "output": "Storage requests and responses delivered through the intended fabric paths.",
+          "dependency": "Active zoning, array masking, target readiness and adequate credit return serve different roles.",
+          "failure": "Incorrect authorization can hide a LUN; a slow-draining endpoint can spread congestion to unrelated traffic.",
+          "check": {
+            "question": "Does Fibre Channel zoning determine which LUN a host can use?",
+            "answer": "Zoning permits communication with target ports. Array masking separately exposes the intended logical storage objects; both controls and their effective state must be checked."
+          },
+          "lessons": [
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L018",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L020",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L09",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "network-oob",
+          "title": "Out-of-band management",
+          "role": "Provides controlled administrative and recovery access separate from ordinary workload traffic.",
+          "input": "Approved administrator sessions, management identity and service reachability.",
+          "output": "Authorized console, inventory, diagnostic or recovery operations with accounting.",
+          "dependency": "Management power, network and identity paths must survive the failure the design claims to cover.",
+          "failure": "Shared dependencies can remove recovery access with production; excessive management authority can affect many devices.",
+          "check": {
+            "question": "When is an out-of-band path actually independent?",
+            "answer": "When it avoids the relevant failed dependencies, including power, network and identity services. A dedicated-looking management port alone does not establish that independence."
+          },
+          "lessons": [
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L07",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L024",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L18",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "compute",
+      "title": "Compute",
+      "color": "#af98f2",
+      "description": "Mandatory now: D5 hardware and supporting platforms. Connect component behavior to workload performance, integrity and recovery.",
+      "components": [
+        {
+          "id": "compute-cpu-memory",
+          "title": "CPU & memory",
+          "role": "Executes instructions and supplies the working data through caches and memory channels.",
+          "input": "Instructions, data, supported memory population and operating power/cooling.",
+          "output": "Workload results with measurable latency, throughput and memory-error evidence.",
+          "dependency": "Memory bandwidth, NUMA placement, firmware and thermal conditions can limit the service before core count does.",
+          "failure": "Remote memory, channel imbalance or hardware/thermal faults can degrade service despite apparently spare CPU.",
+          "check": {
+            "question": "Can low CPU utilization rule out a compute bottleneck?",
+            "answer": "No. A workload may wait on memory latency, bandwidth or another dependency. Use representative workload evidence and discriminating checks before treating the processor as the cause."
+          },
+          "lessons": [
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L01",
+              "level": "foundation"
+            },
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L13",
+              "level": "applied"
+            },
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L14",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "compute-accelerator",
+          "title": "GPU & PCIe paths",
+          "role": "Accelerates suitable parallel work while exchanging data with host memory, peers and network adapters.",
+          "input": "Prepared workload data, driver/runtime state and accelerator commands.",
+          "output": "Computed results and workload-specific completion or performance evidence.",
+          "dependency": "Device memory, PCIe locality, supported firmware and fabric behavior constrain useful throughput.",
+          "failure": "Data starvation, topology mismatches or RDMA errors can stall a distributed job without a failed GPU.",
+          "check": {
+            "question": "Does high GPU utilization prove a useful performance result?",
+            "answer": "No. Measure the application outcome under stated conditions. Data movement, communication waits or unsuitable kernels can consume resources without meeting the required throughput or latency."
+          },
+          "lessons": [
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L02",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L047",
+              "level": "applied"
+            },
+            {
+              "courseId": "NETWORK-ENGINEERING",
+              "lessonId": "NETWORK-ENGINEERING-L28",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "compute-storage",
+          "title": "Storage array & host paths",
+          "role": "Persists data and exposes it through identified storage objects and coordinated access paths.",
+          "input": "Read/write requests, stable storage identities and host path policy.",
+          "output": "Durable data service with measured latency, integrity and recovery behavior.",
+          "dependency": "Media resilience, controller state, fabric access and host multipathing cover distinct failures.",
+          "failure": "A common target dependency or incorrect recovery can interrupt I/O even when the host lists multiple paths.",
+          "check": {
+            "question": "Do two visible storage paths prove full redundancy?",
+            "answer": "No. They can share an adapter, switch, controller or array. Trace shared points and test the stated path failure while checking application I/O and data integrity."
+          },
+          "lessons": [
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L08",
+              "level": "foundation"
+            },
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L10",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L10",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "compute-hypervisor",
+          "title": "Hypervisor & virtual switch",
+          "role": "Hosts workloads and maps their virtual interfaces onto supported physical resources and policies.",
+          "input": "Guest traffic, virtual-network configuration and the approved host baseline.",
+          "output": "Workload execution and packet forwarding through the actual virtual or passthrough path.",
+          "dependency": "Virtualization manager, port group, encapsulation, uplinks and physical fabric attachments must agree.",
+          "failure": "A visible VM can remain disconnected; passthrough can change enforcement, capture and migration behavior.",
+          "check": {
+            "question": "Does discovering a VM prove its network policy is deployed?",
+            "answer": "No. Inventory and forwarding are separate states. Verify the virtual switch or passthrough path, encapsulation, uplink and physical attachment using the required application flow."
+          },
+          "lessons": [
+            {
+              "courseId": "HARDWARE-ENGINEERING",
+              "lessonId": "HARDWARE-ENGINEERING-L11",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CCNP-DC",
+              "lessonId": "CCNP-DC-L036",
+              "level": "applied"
+            },
+            {
+              "courseId": "CCIE-DC",
+              "lessonId": "CCIE-DC-L14",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "controls",
+      "title": "Controls",
+      "color": "#68d3ac",
+      "description": "Priority now: D6 controls engineering. Follow the measurement, decision and command chain across physical equipment and supervisory software.",
+      "components": [
+        {
+          "id": "controls-sensor",
+          "title": "Sensor & field I/O",
+          "role": "Turns a physical quantity at a known location into a qualified engineering observation.",
+          "input": "The measurand, transmitter signal, wiring and configured measurement range.",
+          "output": "A value with units, identity, time and quality for controller and operator decisions.",
+          "dependency": "Placement, calibration, wiring, conversion and point mapping must preserve the same physical meaning.",
+          "failure": "A plausible but frozen or wrongly scaled value can mislead both control logic and cybersecurity analysis.",
+          "check": {
+            "question": "Can an authenticated sensor still give misleading data?",
+            "answer": "Yes. Authentication identifies a source; it does not prove calibration, placement, freshness or mapping. Validate the physical-to-logical chain and retain bad or uncertain quality states."
+          },
+          "lessons": [
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L02",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L03",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L16",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "controls-plc",
+          "title": "PLC & sequence logic",
+          "role": "Evaluates process inputs and executes stateful control within the selected controller timing model.",
+          "input": "Sampled inputs, valid permissives, operating mode and approved logic.",
+          "output": "Commands, sequence state, diagnostics and bounded fault transitions.",
+          "dependency": "Task scheduling, I/O updates, feedback deadlines and equipment eligibility must match the control narrative.",
+          "failure": "Missed pulses, stale permissives or ambiguous state transitions can cause incorrect equipment behavior.",
+          "check": {
+            "question": "Why is an issued start command not proof of a successful start?",
+            "answer": "A command records intent. The sequence needs timely equipment feedback and the required process contribution; otherwise it must follow the specified fault or fallback transition."
+          },
+          "lessons": [
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L04",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L05",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L17",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "controls-supervisory",
+          "title": "BMS, EPMS & historian",
+          "role": "Presents mechanical/electrical state, alarms and historical evidence to operators.",
+          "input": "Field observations, source quality/time, status feedback and approved supervisory commands.",
+          "output": "Qualified displays, alarm transitions, event history and operational decision support.",
+          "dependency": "Point identity, timestamps, collection health, alarm meaning and clear control ownership must survive integration.",
+          "failure": "Fresh-looking displays can repeat stale data or present a request bit as proof of physical equipment state.",
+          "check": {
+            "question": "Does a green breaker-close request prove the breaker closed?",
+            "answer": "No. A request expresses intent. Use the defined physical feedback and qualified observations; supervisory integration must preserve the distinction between command, status and actual function."
+          },
+          "lessons": [
+            {
+              "courseId": "DCCA",
+              "lessonId": "DCCA-L20",
+              "level": "foundation"
+            },
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L11",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L18",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "controls-gateway",
+          "title": "Protocol & serial gateway",
+          "role": "Connects supported field and IP interfaces while preserving device identity and point semantics.",
+          "input": "Serial frames or IP requests, device addressing and the verified register map.",
+          "output": "Translated observations or authorized operations with interpretable transaction evidence.",
+          "dependency": "Electrical bus design, framing/timing, unit addressing and scale/order conventions must align.",
+          "failure": "A plausible value can belong to the wrong point; a write request may be observed without being accepted or applied.",
+          "check": {
+            "question": "Does seeing a Modbus write request prove the process changed?",
+            "answer": "No. Reconstruct the request and response in connection and unit context, then examine controller state and physical outcome. Network intent, acceptance and process effect are distinct evidence."
+          },
+          "lessons": [
+            {
+              "courseId": "CONTROLS-ENGINEERING",
+              "lessonId": "CE-L13",
+              "level": "foundation"
+            },
+            {
+              "courseId": "NETWORK-ENGINEERING",
+              "lessonId": "NETWORK-ENGINEERING-L29",
+              "level": "applied"
+            },
+            {
+              "courseId": "GRID",
+              "lessonId": "GRID-L016",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security",
+      "color": "#ef8ea0",
+      "description": "Priority now: D7 cybersecurity. Protect authorized operations, preserve evidence and restore trust across the connected data center.",
+      "components": [
+        {
+          "id": "security-firewall",
+          "title": "Zone firewall",
+          "role": "Enforces approved communication between zones with explicit routing, policy and connection-state behavior.",
+          "input": "Packets, flow requirements and the current approved security policy.",
+          "output": "Permitted or denied flows with usable enforcement and event evidence.",
+          "dependency": "Actual routes, alternate paths, connection state and management authority must support the intended boundary.",
+          "failure": "A rule change can block new sessions while leaving existing authority active; failover can expose a different path.",
+          "check": {
+            "question": "Does deleting an allow rule immediately revoke every session?",
+            "answer": "Not necessarily. Established connection state can preserve access. Define the required revocation behavior and verify both new and existing sessions on the actual enforcement paths."
+          },
+          "lessons": [
+            {
+              "courseId": "IC32",
+              "lessonId": "IC32-L10",
+              "level": "foundation"
+            },
+            {
+              "courseId": "IC34",
+              "lessonId": "IC34-L05",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L09",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "security-remote-access",
+          "title": "Remote access broker",
+          "role": "Constrains maintenance access to an accountable person, approved target, task and session.",
+          "input": "Verified identity, work authorization, target scope and permitted time window.",
+          "output": "A bounded engineering session with target-level authority and audit linkage.",
+          "dependency": "Broker identity, downstream accounts, API paths and session expiry must enforce the same approved scope.",
+          "failure": "A valid login or recorded desktop session can coexist with excessive target permissions or an unobserved API path.",
+          "check": {
+            "question": "Does MFA make a remote engineering session authorized for every action?",
+            "answer": "No. MFA strengthens authentication. The approved task, target operations, downstream credentials and session lifecycle determine what the engineer may actually do."
+          },
+          "lessons": [
+            {
+              "courseId": "CISSP",
+              "lessonId": "CISSP-L22",
+              "level": "foundation"
+            },
+            {
+              "courseId": "IC34",
+              "lessonId": "IC34-L08",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L08",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "security-identity",
+          "title": "Identity & certificate services",
+          "role": "Binds people and services to authenticated identities, current roles and intended peers.",
+          "input": "Identity proof, authenticators, trust anchors and approved authorization policy.",
+          "output": "Verified sessions and service relationships with scoped authority.",
+          "dependency": "Time, certificate purpose, trust distribution, renewal and recovery must remain consistent across consumers.",
+          "failure": "Restoring an old snapshot can revive departed users, obsolete trust anchors or temporary administrator rights.",
+          "check": {
+            "question": "Should a restored identity backup be accepted exactly as saved?",
+            "answer": "No. Reconcile it with current authorized roles and trusted peers. Historical validity does not establish present authority, and required new identities may also be missing."
+          },
+          "lessons": [
+            {
+              "courseId": "CISSP",
+              "lessonId": "CISSP-L22",
+              "level": "foundation"
+            },
+            {
+              "courseId": "IC34",
+              "lessonId": "IC34-L10",
+              "level": "applied"
+            },
+            {
+              "courseId": "ISA-EXPERT",
+              "lessonId": "ISA-EXPERT-L12",
+              "level": "advanced"
+            }
+          ]
+        },
+        {
+          "id": "security-detection",
+          "title": "Monitoring sensor & evidence",
+          "role": "Collects network and system observations that support defensible detection and incident analysis.",
+          "input": "TAP/mirror traffic, endpoint events, controller changes and qualified process observations.",
+          "output": "Correlated evidence and tested detection hypotheses with explicit coverage limits.",
+          "dependency": "Collection capacity, placement, source identity, clock quality and capture health determine what is observable.",
+          "failure": "Dropped traffic or missing paths can create false confidence; matching timestamps alone can imply a false causal story.",
+          "check": {
+            "question": "Does no alert prove there was no unauthorized control action?",
+            "answer": "No. First establish visibility and collection health. Correlate request, acceptance, controller change and process outcome, and retain competing explanations where evidence is incomplete."
+          },
+          "lessons": [
+            {
+              "courseId": "GRID",
+              "lessonId": "GRID-L005",
+              "level": "foundation"
+            },
+            {
+              "courseId": "IC34",
+              "lessonId": "IC34-L15",
+              "level": "applied"
+            },
+            {
+              "courseId": "GRID",
+              "lessonId": "GRID-L023",
+              "level": "advanced"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
